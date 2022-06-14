@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body onload="init()">
+    <section class="draw-settings">
+      <form name="canvas-settings" class="canvas-settings" onchange="getCanvasSettings(event)">
+        <input type="color"  name='bg' value="#FFFFFF" />
+        <input type="color" name="color" value="#3A3335" />
+        <select name="shape">
+            <option value="pen">PEN</option>
+          <option value="square">SQUARE</option>
+          <option value="circle">CIRCLE</option>
+          <option value="triangle">TRIANGLE</option>
+        </select>
+        <button class="btn" onclick="clearCancas()">Clear</button>
+        <a id="download" download="canvas.png">
+          <button class="btn" type="button" onClick="downloadImg()">Download</button>
+        </a>
+        <label for="file-upload" class="btn upload-label">Upload</label>
+        <input id="file-upload" type="file" onchange="handleImg(event)" onclick="setUploading()"></input> 
+      </form>
+    </section>
+
+    <canvas id="canvas" onclick="draw(event)"></canvas>
+   
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

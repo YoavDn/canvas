@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: 'Inter', sans-serif;
+}
+.draw-settings {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 600px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.canvas-settings {
+  width: 80%;
+  margin: auto;
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+input[type='file'] {
+  display: none;
+}
+
+select {
+  border: none;
+}
+
+.btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  width: 80px;
+  cursor: pointer;
+  padding: 5px 7px;
+  background: none;
+  border: solid black 1px;
+  border-radius: 3px;
+}
+
+.btn:hover {
+  background: rgb(244, 240, 240);
+}
+
+input[type='color'] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+
+  cursor: pointer;
+  padding: 0;
+  width: 50px;
+}
+.canvas-container {
+  margin-inline: auto;
+  margin-bottom: 3rem;
+  width: 800px;
+  height: 600px;
+}
+
+@media (max-width: 800px) {
+  .draw-settings {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .canvas-settings {
+    width: 90%;
+  }
+}
+.draw-settings {
+  margin-top: 0;
+}
+
+#canvas {
+  background-color: #3a3335;
+}
