@@ -1,4 +1,4 @@
-# canvas
+#  HTML5 canvas app
 Responsive drawing app bulit with HTML5 canvas.
 link: https://yoavdn.github.io/canvas/
 
