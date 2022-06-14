@@ -10,6 +10,10 @@ var gSettings = {
   isUploading: false,
   isDrawing: false,
 }
+var lastX
+var lastY
+
+const gTouchEvs = ['touchstart', 'touchmove', 'touchend']
 
 function init() {
   gCanvas = document.getElementById('canvas')
@@ -18,13 +22,46 @@ function init() {
   gCanvas.width = window.innerWidth
   gCanvas.height = window.innerHeight
 
+  document.addEventListener('ontouchstart', function (ev) {
+    e.preventDefault()
+  })
+
   changeBg()
+
   gCanvas.addEventListener('mousedown', onMouseDown)
   gCanvas.addEventListener('mouseup', onMouseUp)
   gCanvas.addEventListener('mousemove', onMouseMove)
-  gCanvas.addEventListener('touchstart', onMouseDown)
-  gCanvas.addEventListener('touchend', onMouseUp)
-  gCanvas.addEventListener('touchend', onMouseMove)
+
+  //handle touch events
+
+  function line(fromX, fromY, toX, toY) {
+    gCtx.beginPath()
+    gCtx.moveTo(fromX, fromY)
+    gCtx.lineTo(toX, toY)
+    gCtx.stroke()
+    gCtx.closePath()
+  }
+
+  gCanvas.ontouchstart = function (event) {
+    event.preventDefault()
+    lastX = event.touches[0].clientX
+    lastY = event.touches[0].clientY
+  }
+
+  gCanvas.ontouchmove = function (event) {
+    event.preventDefault()
+    if (gSettings.shape !== 'pen') {
+      draw(event)
+    } else {
+      var newx = event.touches[0].clientX
+      var newy = event.touches[0].clientY
+
+      line(lastX, lastY, newx, newy)
+
+      lastX = newx
+      lastY = newy
+    }
+  }
 }
 
 function onMouseDown() {
@@ -34,13 +71,15 @@ function onMouseDown() {
 function onMouseMove(e) {
   if (!gSettings.isDrawing) return
 
+  const { x, y } = getMousePosition(e)
+
   if (gSettings.shape === 'pen') {
-    gCtx.lineWidth = 4
+    gCtx.lineWidth = 3
     gCtx.strokeStyle = gSettings.color
     gCtx.lineCap = 'round'
-    gCtx.lineTo(e.offsetX, e.offsetY)
+    gCtx.lineTo(x, y)
     gCtx.stroke()
-    gCtx.moveTo(e.offsetX, e.offsetY)
+    gCtx.moveTo(x, y)
   } else {
     draw(e)
   }
@@ -51,8 +90,15 @@ function onMouseUp() {
 }
 
 function draw(e) {
-  const { offsetX, offsetY } = e
-  drawShape(offsetX, offsetY)
+  if (gTouchEvs.includes(e.type)) {
+    var x = e.touches[0].clientX
+    var y = e.touches[0].clientY
+
+    drawShape(x, y)
+  } else {
+    const { offsetX, offsetY } = e
+    drawShape(offsetX, offsetY)
+  }
 }
 
 function drawShape(x, y) {
@@ -111,7 +157,7 @@ function handleImg(e) {
 
 function drawCircle(x, y) {
   gCtx.beginPath()
-  gCtx.arc(x, y, Math.abs(getRandomInt(20, 70)), 0, 2 * Math.PI)
+  gCtx.arc(x, y, Math.abs(getRandomInt(10, 40)), 0, 2 * Math.PI)
   gCtx.closePath()
   gCtx.fill()
 }
@@ -119,8 +165,8 @@ function drawCircle(x, y) {
 function drawTriangle(x, y) {
   gCtx.beginPath()
   gCtx.moveTo(x, y)
-  gCtx.lineTo(x, y + getRandomInt(40, 100))
-  gCtx.lineTo(x + getRandomInt(40, 100), y + getRandomInt(40, 100))
+  gCtx.lineTo(x, y + getRandomInt(10, 40))
+  gCtx.lineTo(x + getRandomInt(10, 49), y + getRandomInt(10, 60))
   gCtx.closePath()
   gCtx.fill()
 }
@@ -135,4 +181,10 @@ function getRandomInt(min, max) {
   const chance = Math.random() > 0.5
   const rendom = Math.floor(Math.random() * (max - min) + min)
   return chance ? rendom * -1 : rendom //The maximum is exclusive and the minimum is inclusive
+}
+
+function getMousePosition(e) {
+  var mouseX = ((e.offsetX * gCanvas.width) / gCanvas.clientWidth) | 0
+  var mouseY = ((e.offsetY * gCanvas.height) / gCanvas.clientHeight) | 0
+  return { x: mouseX, y: mouseY }
 }
