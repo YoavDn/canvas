@@ -22,6 +22,9 @@ function init() {
   gCanvas.addEventListener('mousedown', onMouseDown)
   gCanvas.addEventListener('mouseup', onMouseUp)
   gCanvas.addEventListener('mousemove', onMouseMove)
+  gCanvas.addEventListener('touchstart', onMouseDown)
+  gCanvas.addEventListener('touchend', onMouseUp)
+  gCanvas.addEventListener('touchend', onMouseMove)
 }
 
 function onMouseDown() {
